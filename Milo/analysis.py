@@ -14,21 +14,22 @@ df['days'] = delta.apply(lambda x: x.days)
 
 winners = df[df['winner']==1]
 
-#formula = 'pred ~ clicks'
+#formula = 'pred ~ click_rate + winner + ifk '
 
 
-def anova(formula):
+def anova(formula,typ=2,df=df):
     lm = ols(formula, data=df).fit()
-    return stats.anova_lm(lm, typ=2)
+    return stats.anova_lm(lm, typ=typ)
 
 
+no_overrides = df[df['first_place'] == df['winner']]
+overrides = df[df['first_place'] != df['winner']]
 
-
-real = df[df['rescaled_pred']==0]
-fake = df[df['rescaled_pred']==1]
+#real = df[df['rescaled_pred']==0]
+#fake = df[df['rescaled_pred']==1]
 
 #plt.boxplot([real['clicks'], fake['clicks']], showfliers=False)
 #plt.boxplot([real['impressions'], fake['impressions']], showfliers=False)
 #plt.boxplot([real['click_rate'], fake['click_rate']], showfliers=False)
 
-plt.scatter(df.groupby(['days'])['days'], df.groupby(['days']).mean()['click_rate'])
+#plt.scatter(df.groupby(['days'])['days'], df.groupby(['days']).mean()['click_rate'])

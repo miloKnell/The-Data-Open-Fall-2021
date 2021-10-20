@@ -79,6 +79,15 @@ df = pd.read_csv('packages.csv')
 df = df[df['headline'].notna()].reset_index()
 nela = NELAFeatureExtractor()
 
+'''n=129054 #stopping place
+features = []
+for i in range(n,len(df)):
+    headline = df['headline'][i]
+    feature_vector, feature_names = nela.extract_all(headline)
+    features.append(feature_vector)
+    if i % 1000 == 0:
+        print(i)'''
+
 
 features = []
 for headline in df['headline']:
