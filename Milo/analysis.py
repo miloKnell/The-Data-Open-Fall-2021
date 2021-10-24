@@ -13,16 +13,6 @@ df['date'] = pd.to_datetime(df['created_at'])
 delta = df['date'] - min(df['date'])
 df['days'] = delta.apply(lambda x: x.days)
 
-#winners = df[df['winner']==1]
-
-#formula = 'pred ~ click_rate + winner + ifk '
-
-
-def anova(formula,typ=2,df=df):
-    lm = ols(formula, data=df).fit()
-    return stats.anova_lm(lm, typ=typ)
-
-
 no_overrides = df[df['first_place'] == df['winner']]
 overrides = df[df['first_place'] != df['winner']]
 
@@ -33,7 +23,7 @@ win_not_match = len(df) - win_match
 first_match = (df['first_place'] == df['rescaled_pred']).sum()
 first_not_match = len(df) - first_match
 
-n_cutoff = 750
+n_cutoff = 748
 
 pre_overrides = overrides[overrides['days']<n_cutoff]
 pre_no_overrides = no_overrides[no_overrides['days']<n_cutoff]
@@ -57,42 +47,11 @@ day, day_pred, day_clicks = get_day_pred(df)
 override_day, override_pred, override_clicks = get_day_pred(overrides)
 no_override_day, no_override_pred, no_override_clicks = get_day_pred(no_overrides)
 
-
-
-
-'''
-override_day, override_pred = get_day_pred(overrides)
-no_override_day, no_override_pred = get_day_pred(no_overrides)
-
-plt.plot(override_day, override_pred, label='overrides')
-plt.plot(no_override_day, no_override_pred, label='no overrides')
-plt.legend()
-plt.show()'''
-
-
-'''w=[(col, spearmanr(df[col], df['click_rate'])) for col in df.loc[:, 'quotes':'MoralityGeneral']]
-s=sorted(w, key=lambda x: abs(x[1][0]))
-
-for q in s:
-	print(q)'''
-
 views = pd.read_csv('analytics_daily_pageviews.csv', thousands=',')
 views['date'] = pd.to_datetime(views['date'])
 views = views[views['date'] >= min(df['date'])]
 delta = views['date'] - min(views['date'])
 views['days'] = delta.apply(lambda x: x.days)
-#plt.plot(views['date'], savgol_filter(views['pageviews']/max(views['pageviews']), 41, 3), label='views')
-
-
-
-w=[(col, spearmanr(df[col], df['pred'])) for col in df.loc[:, 'quotes':'MoralityGeneral']]
-s=sorted(w, key=lambda x: abs(x[1][0]))
-
-#for q in s:
-#	print(q)
-
-
-
 
 
 '''

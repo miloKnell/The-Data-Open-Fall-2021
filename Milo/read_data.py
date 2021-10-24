@@ -4,6 +4,7 @@
 2: satire
 '''
 
+
 #write a json file with x and y for real/fake news articles
 '''
 import os
@@ -36,21 +37,25 @@ x,y = zip(*c)
 
 data = {'x':x, 'y':y}
 
-with open('data.json', 'w') as f:
-    f.write(json.dumps(data))
+#with open('data.json', 'w') as f:
+#    f.write(json.dumps(data))
 '''
+
+
+
+
 
 
 
 #write a csv with NELA features for the real/fake news dataset
 '''
 import json
-from my_nela_features.nela_features import NELAFeatureExtractor
+from my_nela_features import NELAFeatureExtractor
 import numpy as np
 import pandas as pd
 
-with open('data.json') as f:
-    data = json.loads(f.read())
+#with open('data.json') as f:
+#    data = json.loads(f.read())
 
 raw_x = data['x']
 raw_y = data['y']
@@ -71,6 +76,9 @@ df = pd.DataFrame(np.hstack((x,y.reshape(-1, 1))), columns=feature_names+['y'])
 '''
 
 
+
+
+#extract features from packages
 '''import pandas as pd
 from my_nela_features.nela_features import NELAFeatureExtractor
 import json
@@ -99,7 +107,7 @@ full_df = pd.concat([df, feats], axis=1)
 full_df.to_csv('package_feats.csv')
 '''
 
-
+'''
 import pandas as pd
 df = pd.read_csv('package_rescale.csv')
 sf = pd.read_csv('softrank.csv')
@@ -112,3 +120,4 @@ filtered['performance'] = sf['performance']
 new_df = []
 for name, group in df.groupby('test_id'):
     if name in sf['test_id']
+'''
