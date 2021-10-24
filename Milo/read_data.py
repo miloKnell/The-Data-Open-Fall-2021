@@ -71,22 +71,13 @@ df = pd.DataFrame(np.hstack((x,y.reshape(-1, 1))), columns=feature_names+['y'])
 '''
 
 
-import pandas as pd
+'''import pandas as pd
 from my_nela_features.nela_features import NELAFeatureExtractor
 import json
 
 df = pd.read_csv('packages.csv')
 df = df[df['headline'].notna()].reset_index()
 nela = NELAFeatureExtractor()
-
-'''n=129054 #stopping place
-features = []
-for i in range(n,len(df)):
-    headline = df['headline'][i]
-    feature_vector, feature_names = nela.extract_all(headline)
-    features.append(feature_vector)
-    if i % 1000 == 0:
-        print(i)'''
 
 
 features = []
@@ -106,3 +97,18 @@ feats = pd.DataFrame(features, columns=feature_names)
 #feats = pd.concat([old_feature_df, feature_df], axis=0)
 full_df = pd.concat([df, feats], axis=1)
 full_df.to_csv('package_feats.csv')
+'''
+
+
+import pandas as pd
+df = pd.read_csv('package_rescale.csv')
+sf = pd.read_csv('softrank.csv')
+
+
+filtered = df[df.index.isin(sf.index)]
+filtered['performance'] = sf['performance']
+
+
+new_df = []
+for name, group in df.groupby('test_id'):
+    if name in sf['test_id']
